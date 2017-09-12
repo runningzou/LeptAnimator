@@ -106,6 +106,12 @@ public class MainActivity extends AppCompatActivity {
 ## 2、[解决方案](https://github.com/runningzou/LeptAnimator)
 这是一个属性动画封装的库，解决了上面提到的问题，使用方法：
 
+* 添加依赖
+
+```gradle
+compile 'com.runningzou.leptanimator:library:0.0.1'
+```
+
 * 定义一个 LeptAnimator 子类
 
 ```java
