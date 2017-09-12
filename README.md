@@ -124,10 +124,18 @@ public class SimpleAnimator extends LeptAnimator {
 
         	//AnimatorBuilder 提供了很多实用的方法
             return AnimatorBuilder
-                    .animate(target[0])
+                    .animate(target[0]) //动画1
                     .translationX（100) //单位 dp
                     .ParentTop(10) //距离顶部10dp
-                    .duration(1000);
+                    .duration(1000)
+
+                    .with(target[1]) //动画2，动画2与动画1同步执行
+                    .leftof(target[3],10); //target[1]移动到 target[3] 的右边,距离为 10dp,仅支持对静止的 view 设置相对位置
+                    .alpha(0,1)
+
+                    .after(target[2]) //动画3，动画1，2执行完了，再执行动画3
+                    .translationX（100);
+
 
     }
 }
@@ -137,7 +145,7 @@ public class SimpleAnimator extends LeptAnimator {
 * 使用
 
 ```java
-new SimpleAnimator(view).start();
+new SimpleAnimator(view1,view2,view3,view4).start();
 ```
 
 ## 3、more
