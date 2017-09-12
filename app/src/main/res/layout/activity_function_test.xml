@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:textSize="20sp"
+        android:id="@+id/txt_test1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Hello"/>
+
+    <TextView
+        android:textSize="20sp"
+        android:layout_margin="16dp"
+        android:id="@+id/txt_test2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/txt_test1"
+        android:text="World"/>
+
+    <Button
+        android:text="单个动画"
+        android:id="@+id/btn_single"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_mutil_sync"
+        android:layout_alignBottom="@+id/btn_mutil_sync"
+        android:layout_alignLeft="@+id/btn_percent"
+        android:layout_alignStart="@+id/btn_percent"/>
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:layout_toRightOf="@+id/btn_single"
+        android:text="多个同步动画"
+        android:id="@+id/btn_mutil_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:layout_toRightOf="@+id/btn_mutil_sync"
+        android:text="多个顺序动画"
+        android:id="@+id/btn_mutil_asyn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_margin="16dp"
+        android:layout_above="@+id/btn_single"
+        android:text="设置动画百分比"
+        android:id="@+id/btn_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_refer"
+        android:layout_centerInParent="true"
+        android:text="你好"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>
