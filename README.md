@@ -17,7 +17,7 @@ animator.start();
 ```
 
 代码写起来很简洁，直观。但是**难以复用**，如果另一个地方我需要使用相同效果的动画，还得再写一次一模一样的代码。
-
+ps:
 ### 1.2、无法获取尺寸信息
 
 很多时候我们需要根据一些尺寸信息来做动画：
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
 ## 1.3、复杂动画实现不够简洁
 
-多个 AnimatorSet 顺序播放
+AnimatorSet 可以将多个 Animator 一起或顺序执行，但是多个 AnimatorSet 要顺序执行，就只有这样写了：
 
 ```
  mAnimatorSet1.addListener(new Animator.AnimatorListener() {
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
             mAnimatorSet1.start();
 ```
-可以看见，代码都点繁琐。
+可以看见，代码优点繁琐。
 
 ## 2、[解决方案](https://github.com/runningzou/LeptAnimator)
 这是一个属性动画封装的库，解决了上面提到的问题，使用方法：
@@ -151,13 +151,121 @@ public class SimpleAnimator extends LeptAnimator {
 * 使用
 
 ```java
-new SimpleAnimator(view1,view2,view3,view4).start();
+
+LeptAnimator animator = new SimpleAnimator(view1,view2,view3,view4).start();
+
+animator.setStartListener(new ViewAnimatorListener.startListener() {
+            @Override
+            public void onAnimatorStart() {
+                Log.d("tag","动画开始");
+            }
+        });
+
+animator.setEndListener(new ViewAnimatorListener.endListener() {
+            @Override
+            public void onAnimatorEnd() {
+                Log.d("tag","动画结束");
+            }
+        });
 ```
 
-## 3、more
-更多用法可以查看demo，下面是demo的效果图。
+##3、问题解决了吗？
+##3.1、代码复用
+这个封装库中，动画被封装成了一个个的类，例如示例中的 SimpleAnimator，使用的时候只需要 new 一个对象，并传入需要操作的 view 就可以了。用人肯定会说了，我用 xml 写动画，代码中再加载就可以了。动画用 xml 写我一直觉得不优雅,代码可以很容易做到事（几行代码就获取一个 Animator 实例），用 xml 写，除了要增加文件数、代码行数，还会导致增加 IO 操作，效率降低（读取文件，解析文件）。
 
+##3.2、无法获取尺寸信息
+LeptAnimator 的 prepare 方法大概是这样运行的
+
+```java
+view.post(new Runnable(){
+	public void run() {
+		prepare();
+	}
+})
+```
+所以在准备动画的过程中（即 prepare 方法中），可以获取到 view 的尺寸信息。
+而且这个库的 AnimatorBuilder 类提供了几个方法来简化你的尺寸计算
+
+```
+//将 View 贴近父布局顶部，间隔为 margin dp
+public AnimatorBuilder parentTop(int margin)
+
+//将 View 贴近父布局底部，间隔为 margin dp
+public AnimatorBuilder parentBottom(int margin)
+
+//将 View 贴近父布局左边界，间隔为 margin dp
+public AnimatorBuilder parentLeft(int margin)
+
+//将 View 贴近父布局右边界，间隔为 margin dp
+public AnimatorBuilder parentRight(int margin)
+
+//将 View 移动到 target 的左侧，间隔为 rigntMargin
+public AnimatorBuilder leftof(View target, int rightMargin)
+//类似的方法还有
+public AnimatorBuilder rightof(View target, int margin)
+public AnimatorBuilder topof(View target, int margin)
+public AnimatorBuilder bottomof(View target, int margin)
+```
+部分方法在上面的示例代码中有使用，可以参考。
+库中所有距离的单位均为 dp。
+
+##3.3、复杂动画实现不够简洁
+看看示例代码
+
+```java
+public class SimpleAnimator extends LeptAnimator {
+
+	//必须覆写该构造方法，view 表示需要做动画的控件和需要测量尺寸信息的控件
+    public SimpleAnimator(View... view) {
+        super(view);
+
+    }
+
+	//target 就是构造方法中传入的 view
+	//这些 View 可以用于做动画或者测量尺寸
+    @Override
+    public AnimatorBuilder prepare(View... target) {
+
+        	//AnimatorBuilder 提供了很多实用的方法
+            return AnimatorBuilder
+                    .animate(target[0]) //动画1
+                    .translationX（100) //单位 dp
+                    .ParentTop(10) //距离顶部10dp
+                    .duration(1000)
+
+                    .with(target[1]) //动画2，动画2与动画1同步执行
+                    .leftof(target[3],10); //target[1]移动到 target[3] 的右边,距离为 10dp,仅支持对静止的 view 设置相对位置
+                    .alpha(0,1)
+
+                    .after(target[2]) //动画3，动画1，2执行完了，再执行动画3
+                    .translationX（100);
+
+
+    }
+}
+
+```
+
+* 通过 with 可以定义同步执行的动画
+* 通过 after 可以定义顺序执行的动画
+
+
+##4、彩蛋
+库中提供了一个有意思的功能
+
+```
+//设置动画执行的百分比，0.5 表示动画执行一半。
+leptAnimator.setpercent(0.2);
+```
+这个功能可以实现一些有意思的效果，比如 demo 中的 ScrollActivity(具体见下一节的 gif图)
+
+## 4、more
+更多用法可以查看demo，下面是demo的效果图。
 
 ![](https://github.com/runningzou/LeptAnimator/blob/master/app/gif/2017-09-12%2016.50.54.gif?raw=true)
 
+##5、感谢
+库的实现过程参考了以下开源项目：
 
+* [ViewAnimator](https://github.com/florent37/ViewAnimator)
+* [AndroidViewAnimations](https://github.com/daimajia/AndroidViewAnimations)
