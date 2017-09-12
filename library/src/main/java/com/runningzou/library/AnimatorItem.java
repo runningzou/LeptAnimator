@@ -55,6 +55,7 @@ public class AnimatorItem {
             mAnimatorSet = new AnimatorSet();
             mAnimatorSet.playTogether(mAnimators);
             mAnimatorSet.setDuration(mDuration);
+
         }
         return mAnimatorSet;
     }

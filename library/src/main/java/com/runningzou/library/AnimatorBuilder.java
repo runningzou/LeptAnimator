@@ -157,6 +157,7 @@ public class AnimatorBuilder {
         return property(View.Y, view.getHeight() - bottomMargin - mCurTarget.getBottom());
     }
 
+
     public AnimatorBuilder leftof(View view, int rightMargin) {
         rightMargin = DistanceUtil.dp2px(rightMargin);
         return property(View.X, view.getLeft() - rightMargin - mCurTarget.getWidth());
