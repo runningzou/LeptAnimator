@@ -170,10 +170,10 @@ animator.setEndListener(new ViewAnimatorListener.endListener() {
 ```
 
 ##3、问题解决了吗？
-##3.1、代码复用
+###3.1、代码复用
 这个封装库中，动画被封装成了一个个的类，例如示例中的 SimpleAnimator，使用的时候只需要 new 一个对象，并传入需要操作的 view 就可以了。用人肯定会说了，我用 xml 写动画，代码中再加载就可以了。动画用 xml 写我一直觉得不优雅,代码可以很容易做到事（几行代码就获取一个 Animator 实例），用 xml 写，除了要增加文件数、代码行数，还会导致增加 IO 操作，效率降低（读取文件，解析文件）。
 
-##3.2、无法获取尺寸信息
+###3.2、无法获取尺寸信息
 LeptAnimator 的 prepare 方法大概是这样运行的
 
 ```java
@@ -209,7 +209,7 @@ public AnimatorBuilder bottomof(View target, int margin)
 部分方法在上面的示例代码中有使用，可以参考。
 库中所有距离的单位均为 dp。
 
-##3.3、复杂动画实现不够简洁
+###3.3、复杂动画实现不够简洁
 看看示例代码
 
 ```java
@@ -259,12 +259,12 @@ leptAnimator.setpercent(0.2);
 ```
 这个功能可以实现一些有意思的效果，比如 demo 中的 ScrollActivity(具体见下一节的 gif图)
 
-## 4、more
+## 5、more
 更多用法可以查看demo，下面是demo的效果图。
 
 ![](https://github.com/runningzou/LeptAnimator/blob/master/app/gif/2017-09-12%2016.50.54.gif?raw=true)
 
-##5、感谢
+##6、感谢
 库的实现过程参考了以下开源项目：
 
 * [ViewAnimator](https://github.com/florent37/ViewAnimator)
