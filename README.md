@@ -144,6 +144,6 @@ new SimpleAnimator(view).start();
 更多用法可以查看demo，下面是demo的效果图。
 
 
-![](https://github.com/runningzou/LeptAnimator/blob/master/app/gif/2017-09-12%2014.05.31.gif?raw=true)
+![](https://github.com/runningzou/LeptAnimator/blob/master/app/gif/2017-09-12%2016.50.54.gif?raw=true)
 
 
