@@ -307,7 +307,7 @@ leptAnimator.setpercent(0.2);
 
 ![](https://github.com/runningzou/LeptAnimator/blob/master/app/gif/2017-09-12%2016.50.54.gif?raw=true)
 
-##6、感谢
+## 6、感谢
 库的实现过程参考了以下开源项目：
 
 * [ViewAnimator](https://github.com/florent37/ViewAnimator)
