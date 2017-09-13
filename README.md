@@ -164,7 +164,8 @@ public class SimpleAnimator extends LeptAnimator {
 
 ```java
 
-LeptAnimator animator = new SimpleAnimator(view1,view2,view3,view4).start();
+LeptAnimator animator = new SimpleAnimator(view1,view2,view3,view4);
+animator.start();
 
 animator.setStartListener(new ViewAnimatorListener.startListener() {
             @Override
