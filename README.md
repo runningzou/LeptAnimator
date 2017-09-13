@@ -108,6 +108,18 @@ AnimatorSet 可以将多个 Animator 一起或顺序执行，但是多个 Animat
 
 * 添加依赖
 
+根目录build
+```gradle
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url 'https://dl.bintray.com/zouzhihao/maven'
+        }
+    }
+}
+```
+项目 build
 ```gradle
 compile 'com.runningzou.leptanimator:library:0.0.1'
 ```
@@ -169,11 +181,11 @@ animator.setEndListener(new ViewAnimatorListener.endListener() {
         });
 ```
 
-##3、问题解决了吗？
+## 3、问题解决了吗？
 ###3.1、代码复用
 这个封装库中，动画被封装成了一个个的类，例如示例中的 SimpleAnimator，使用的时候只需要 new 一个对象，并传入需要操作的 view 就可以了。用人肯定会说了，我用 xml 写动画，代码中再加载就可以了。动画用 xml 写我一直觉得不优雅,代码可以很容易做到事（几行代码就获取一个 Animator 实例），用 xml 写，除了要增加文件数、代码行数，还会导致增加 IO 操作，效率降低（读取文件，解析文件）。
 
-###3.2、无法获取尺寸信息
+### 3.2、无法获取尺寸信息
 LeptAnimator 的 prepare 方法大概是这样运行的
 
 ```java
@@ -184,7 +196,26 @@ view.post(new Runnable(){
 })
 ```
 所以在准备动画的过程中（即 prepare 方法中），可以获取到 view 的尺寸信息。
-而且这个库的 AnimatorBuilder 类提供了几个方法来简化你的尺寸计算
+
+例如：将 view View 贴近父布局右边界，间隔为 margin dp
+
+```java
+
+public class SimpleAnimator extends LeptAnimator {
+    @Override
+    public AnimatorBuilder prepare(View... targets) {
+        View view = targets[0];
+        View ParentView = (View) view.getParent();
+
+        int distance = ParentView.getWidth() - view.getLeft() - view.getWidth() - DistanceUtil.dp2px(10);
+        return new AnimatorBuilder()
+                        .translationX(distance);
+    }
+}
+
+```
+
+现在就可以计算 view 的尺寸信息了，但是每次都要计算，还是颇显麻烦，所有这个库的 AnimatorBuilder 类提供了几个方法来简化你的尺寸计算
 
 ```
 //将 View 贴近父布局顶部，间隔为 margin dp
@@ -206,10 +237,21 @@ public AnimatorBuilder rightof(View target, int margin)
 public AnimatorBuilder topof(View target, int margin)
 public AnimatorBuilder bottomof(View target, int margin)
 ```
-部分方法在上面的示例代码中有使用，可以参考。
 库中所有距离的单位均为 dp。
+有了这些方法，上面的代码就可以改为
 
-###3.3、复杂动画实现不够简洁
+```java
+public class SimpleAnimator extends LeptAnimator {
+    @Override
+    public AnimatorBuilder prepare(View... targets) {
+        return new AnimatorBuilder()
+                        .parentRignt(10);
+    }
+}
+```
+
+利用这这些方法的组合，可以更容易地实现一些酷炫的效果。
+### 3.3、复杂动画实现不够简洁
 看看示例代码
 
 ```java
@@ -250,7 +292,7 @@ public class SimpleAnimator extends LeptAnimator {
 * 通过 after 可以定义顺序执行的动画
 
 
-##4、彩蛋
+## 4、彩蛋
 库中提供了一个有意思的功能
 
 ```
