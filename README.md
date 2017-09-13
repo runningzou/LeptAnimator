@@ -101,7 +101,7 @@ AnimatorSet 可以将多个 Animator 一起或顺序执行，但是多个 Animat
 
             mAnimatorSet1.start();
 ```
-可以看见，代码优点繁琐。
+可以看见，代码略显繁琐。
 
 ## 2、[解决方案](https://github.com/runningzou/LeptAnimator)
 这是一个属性动画封装的库，解决了上面提到的问题，使用方法：
